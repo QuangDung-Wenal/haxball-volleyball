@@ -295,7 +295,7 @@ room.onPlayerChat = function(player, message) {
 						room.setPlayerTeam(player.id,1)
 						whisper('Bạn đã được di chuyển sang đội RED', player.id);
 					}
-					else if (Red_Count >= 6) { // RedPlayer_Count
+					else if (Red_Count > 3) { // RedPlayer_Count
 						
 						whisper('Đội RED đã có đủ người chơi', player.id);
 					}
@@ -321,7 +321,7 @@ room.onPlayerChat = function(player, message) {
 						room.setPlayerTeam(player.id,2)
 						whisper('Bạn đã được di chuyển sang đội BLUE', player.id);
 					}
-					else if (Blue_Count >= 6) { // RedPlayer_Count
+					else if (Blue_Count >3) { // RedPlayer_Count
 						
 						whisper('Đội BLUE đã có đủ người chơi', player.id);
 					}

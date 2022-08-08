@@ -10,7 +10,7 @@ const geo = [{ "code": "IT", "lat": 41.9, "lon": 12.5 },{code: "VN", lat: 10.957
 
 const room = HBInit({ roomName: roomName, maxPlayers: maxPlayers, public: roomPublic, playerName: botName, geo: geo[1],noPlayer:true });
 
-const scoreLimit = 12;
+const scoreLimit = 21;
 const timeLimit = 0;
 room.setScoreLimit(scoreLimit);
 room.setTimeLimit(timeLimit);

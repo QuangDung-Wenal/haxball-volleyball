@@ -4,40 +4,23 @@
  let config = {
    room1: {
      autoStart: true,
-     roomName: `🏆 Thế Vận Hội 1 🏆`,
+     roomName: `🏆 Thế Vận Hội 1 - Bóng Chuyền 🏆`,
      noPlayer: true,
-     maxPlayers: 30,
+     maxPlayers: 13,
      public: true,
      geo: {code: "VN", lat: 21.02888, lon: 105.85464},
-     roomScript: "/home/hqd_weew/haxball/tvhn.js",
+     roomScript: "/home/hqd_weew/haxball-volleyball/tvh1.js",
    },
    room2: {
     autoStart: true,
-    roomName: `🏆 Thế Vận Hội 2 🏆`,
+    roomName: `🏆 Thế Vận Hội 2 - Bóng Chuyền🏆`,
     noPlayer: true,
-    maxPlayers: 30,
+    maxPlayers: 13,
     public: true,
     geo: {code: "VN", lat: 21.02888, lon: 105.85464},
-    roomScript: "/home/hqd_weew/haxball/tvhn2.js",
+    roomScript: "/home/hqd_weew/haxball-volleyball/tvh1.js",
   },
-   pr1: {
-    autoStart: true,
-    roomName: `🏆 TVH Private Room 1  🏆`,
-    noPlayer: true,
-    maxPlayers: 30,
-    public: false,
-    geo: {code: "VN", lat: 21.02888, lon: 105.85464},
-    roomScript: "/home/hqd_weew/haxball/tvhn3.js",
-  },
-   pr2: {
-    autoStart: true,
-    roomName: `🏆 TVH Private Room 2  🏆`,
-    noPlayer: true,
-    maxPlayers: 310,
-    public: false,
-    geo: {code: "VN", lat: 21.02888, lon: 105.85464},
-    roomScript: "/home/hqd_weew/haxball/tvhn3.js",
-  },
+
 
  };
  module.exports = config;

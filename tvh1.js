@@ -440,7 +440,11 @@ room.onPlayerAdminChange = function (changedPlayer, byPlayer) {
 }
 
 
-
+room.onStadiumChange = function (newStadiumName, byPlayer) {
+    if (newStadiumName != "MAP") {
+        room.setCustomStadium(volleyMap);
+    }
+}
 room.onGameTick = function () {
 
 

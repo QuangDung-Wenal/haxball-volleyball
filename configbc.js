@@ -9,7 +9,7 @@
      maxPlayers: 13,
      public: true,
      geo: {code: "VN", lat: 21.02888, lon: 105.85464},
-     roomScript: "/home/hqd_weew/haxball-volleyball/tvh1.js",
+     roomScript: "/home/hqd_wendal/haxball-volleyball/tvh1.js",
    },
    room2: {
     autoStart: true,
@@ -18,7 +18,7 @@
     maxPlayers: 13,
     public: true,
     geo: {code: "VN", lat: 21.02888, lon: 105.85464},
-    roomScript: "/home/hqd_weew/haxball-volleyball/tvh1.js",
+    roomScript: "/home/hqd_wendal/haxball-volleyball/tvh1.js",
   },
 
 

@@ -233,6 +233,9 @@ function resetTeamCount() {
 			start_match()
 	
 }
+room.onGameStart = function(byPlayer) {
+	on_match = true
+}
 room.onPlayerTeamChange = function (changedPlayer, byPlayer) {
     if (changedPlayer.id == 0) {
         room.setPlayerTeam(0, Team.SPECTATORS);
@@ -357,6 +360,7 @@ room.onGameStart = function (byPlayer) {
 }
 
 room.onGameStop = function (byPlayer) {
+	on_match = false
 start_match()
 }
 

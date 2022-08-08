@@ -187,7 +187,6 @@ room.onPlayerJoin = function (player) {
  setTimeout(() =>{
 	whisper("🎖      🏆 Chào Mừng Đến Với Siêu CUP Thế Vận Hội  🏆              🎖 ", player.id, 0xD24780, "bold", 0);
 	whisper("🎖      Nhập !trogiup và !lenh để được xem cách chơi    🎖 ", player.id, 0xD24780, "bold", 0);
-	whisper("🎖     !shop để mua đồ | !rank và !stats để xem thông tin của mình       🎖 ", player.id, 0xCCD547, "bold", 0);
 	whisper("🎖     Discord:     https://discord.gg/thevanhoi   🎖 ", player.id, 0xCCD547, "bold", 0);
 
    announce("Nhập !teamred or !teamblue để chọn team hoặc !spec để xem",player.id);

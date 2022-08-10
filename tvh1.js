@@ -232,9 +232,7 @@ function resetTeamCount() {
 			start_match()
 	
 }
-room.onGameStart = function(byPlayer) {
-	on_match = true
-}
+
 room.onPlayerTeamChange = function (changedPlayer, byPlayer) {
     if (changedPlayer.id == 0) {
         room.setPlayerTeam(0, Team.SPECTATORS);
@@ -243,20 +241,31 @@ room.onPlayerTeamChange = function (changedPlayer, byPlayer) {
 	start_match()
     updateTeams();
 	resetTeamCount()
+    if(byPlayer != null){
+	activities[byPlayer.id] = Date.now();
+	if(changedPlayer.id == byPlayer.id){
+	    activities[changedPlayer.id] = Date.now();
+	}
+    }
 }
 
 room.onPlayerLeave = function (player) {
     updateTeams();
     resetTeamCount()
+    afkPlayerIDs.delete(player.id);
+    delete activities[player.id];
 }
 
 room.onPlayerKicked = function (kickedPlayer, reason, ban, byPlayer) {
+	    if(byPlayer != null){
+	activities[byPlayer.id] = Date.now();
+    }
 }
 
 /* PLAYER ACTIVITY */
 
 room.onPlayerChat = function(player, message) {
-
+	activities[player.id] = Date.now();
 	
 	if (message.includes('@here') || message.includes('@everyone')) {
 		room.kickPlayer(player.id,'Ngôn từ không hợp lệ',true)
@@ -279,6 +288,16 @@ room.onPlayerChat = function(player, message) {
 			room.setPlayerTeam(player.id,0)
 			
 		}	
+		else if (args[0] == "xoaban") {
+			
+			if (player.admin) {
+				room.clearBans();
+				announce("Danh sách bans đã được clear " + player.name);
+			}
+			else {
+				whisper("Admin thôi cu", player.id);
+			}
+		}
 		else if (args[0] == "teamred") { // team mode
 
 				let Red_Count = 0
@@ -333,8 +352,7 @@ room.onPlayerChat = function(player, message) {
 function sleep (time) {
   return new Promise((resolve) => setTimeout(resolve, time));
 }
-room.onPlayerActivity = function (player) {
-}
+
 function isAdminPresent() {
 	var players = room.getPlayerList();
 	if (players.find((player) => player.admin) != null) {
@@ -356,18 +374,21 @@ room.onGameStart = function (byPlayer) {
     lastPlayersTouched = [null, null];
     lastPlayersTouchedTime = Date.now();
     abusingPlayer = null;
+    if(byPlayer != null){
+	activities[byPlayer.id] = Date.now();
+    }
+	on_match = true
 }
 
 room.onGameStop = function (byPlayer) {
 	on_match = false
 start_match()
+    if(byPlayer != null){
+	activities[byPlayer.id] = Date.now();
+    }
 }
 
-room.onGamePause = function (byPlayer) {
-}
 
-room.onGameUnpause = function (byPlayer) {
-}
 
 room.onPlayerBallKick = function (player) {
     if (goalCheering) {
@@ -432,6 +453,9 @@ room.onTeamVictory = function (scores) {
 room.onPositionsReset = function () {
     goalCheering = false;
     lastPlayersTouched = [null, null];
+    for(var i=0; i<players.length; i++){
+	activities[players[i].id] = Date.now();
+    }
 }
 
 /* MISCELLANEOUS */
@@ -439,18 +463,19 @@ room.onPositionsReset = function () {
 room.onRoomLink = function (url) {
 }
 
-room.onPlayerAdminChange = function (changedPlayer, byPlayer) {
-}
 
 
 room.onStadiumChange = function (newStadiumName, byPlayer) {
     if (newStadiumName != "MAP") {
         room.setCustomStadium(volleyMap);
     }
+    if(byPlayer != null){
+	activities[byPlayer.id] = Date.now();
+    }
 }
 room.onGameTick = function () {
 
-
+afkKick()
 
     oldX = room.getBallPosition().x;
     oldY = room.getBallPosition().y;
@@ -459,3 +484,91 @@ room.onGameTick = function () {
     
     getStats();
 }
+const afkPlayerIDs = new Set()
+const activities = {}
+var AFKTimeout = 30000; //In milliseconds | 30 seconds
+var LobbyAFKTimeout = 600000; //In milliseconds | 10 minutes
+
+function afkKick(){
+    var players = room.getPlayerList();
+    for(let id in activities){
+	for(var i=0; i<players.length; i++){
+	    if(room.getScores() != null){
+		if(players[i].team != 0){
+		    if(Date.now() - activities[players[i].id] > AFKTimeout){
+			room.kickPlayer(players[i].id,"AFK",false);
+		    }
+		}
+	    }
+	}
+    }
+}
+
+room.onGamePause = function(byPlayer){
+    if(byPlayer != null){
+	activities[byPlayer.id] = Date.now();
+    }
+}
+
+
+
+
+
+room.onPlayerActivity = function(player){
+    activities[player.id] = Date.now();
+}
+
+room.onPlayerAdminChange = function(changedPlayer,byPlayer){
+    if(byPlayer != null){
+	activities[byPlayer.id] = Date.now();
+	if(changedPlayer.id == byPlayer.id){
+	    activities[changedPlayer.id] = Date.now();
+	}
+    }
+}
+
+room.onGameUnpause = function(byPlayer){
+    if(byPlayer != null){
+	activities[byPlayer.id] = Date.now();
+    }
+}
+
+room.onKickRateLimitSet = function(min,rate,burst,byPlayer){
+    if(byPlayer != null){
+	activities[byPlayer.id] = Date.now();
+    }
+}
+
+/* oom.onPlayerChat = function(player,message){
+    
+
+     if(message.toLowerCase() == "!afk"){
+	 if(afkPlayerIDs.has(player.id) == false){
+	     afkPlayerIDs.add(player.id);
+	     setTimeout(function(){
+		 if(afkPlayerIDs.has(player.id) == true){
+		     room.kickPlayer(player.id,"AFK",false);
+		 }
+	     },LobbyAFKTimeout);
+	     room.sendAnnouncement(`${player.name} đang AFK!`,null,0x00FF00,"normal",1);
+	 }
+	 else{
+	     room.sendAnnouncement("You are already AFK!",player.id,0xFF0000,"bold",2);
+ }
+	 return false;
+     }
+     else if(message.toLowerCase() == "!back"){
+	 if(afkPlayerIDs.has(player.id) == true){
+	     afkPlayerIDs.delete(player.id);
+	     room.sendAnnouncement(`${player.name} đã quay trở lại!`,null,0x00FF00,"normal",1);
+	 }
+	 else{
+	    room.sendAnnouncement("Bạn đã quay trở lại rồi!",player.id,0xFF0000,"bold",2);
+	 }
+	 return false;
+     }
+ } */
+
+
+
+

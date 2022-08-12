@@ -168,7 +168,22 @@ function updateTeams () {
 }
 
 
-
+var db = { p: { N: 4, kt: 1 }, log: [] }; 
+function f(a, b, c) { 
+for (var i = 0; i < a.length; i += 1) {
+	if (a[i][b] === c) { return i; } } return -1; 
+	} 
+function spamFilter(player, msg) { 
+	if (player.id == 0) { return; } 
+	var ind = f(db.log, 'id', player.id); 
+	db.log[ind].lm.push({ ts: Date.now() });
+	if (db.log[ind].lm.length >= db.p.N) { 
+		 db.log[ind].lm.splice(0, db.log[ind].lm.length - db.p.N); 
+		 if (db.log[ind].lm.length / ((db.log[ind].lm[db.log[ind].lm.length - 1].ts - db.log[ind].lm[0].ts) / 1000) > db.p.kt) { 
+			room.kickPlayer(player.id, "Anti Spam", false); }
+	 } 
+ 
+}
 /* STATS FUNCTIONS */
 
 function getStats () {
@@ -185,6 +200,7 @@ var on_match = false
 var has_player = false
 room.onPlayerJoin = function (player) {
  setTimeout(() =>{
+	if (db.log.filter((p) => p.id == player.id).length == 0) { db.log.push({ id: player.id, lm: [] }); }
 	whisper("🎖      🏆 Chào Mừng Đến Với Siêu CUP Thế Vận Hội  🏆              🎖 ", player.id, 0xD24780, "bold", 0);
 	whisper("🎖      Nhập !trogiup và !lenh để được xem cách chơi    🎖 ", player.id, 0xD24780, "bold", 0);
 	whisper("🎖     Discord:     https://discord.gg/thevanhoi   🎖 ", player.id, 0xCCD547, "bold", 0);
@@ -250,6 +266,7 @@ room.onPlayerTeamChange = function (changedPlayer, byPlayer) {
 }
 
 room.onPlayerLeave = function (player) {
+	db.log.splice(f(db.log, 'id', player.id), 1);
     updateTeams();
     resetTeamCount()
     afkPlayerIDs.delete(player.id);
@@ -266,7 +283,7 @@ room.onPlayerKicked = function (kickedPlayer, reason, ban, byPlayer) {
 
 room.onPlayerChat = function(player, message) {
 	activities[player.id] = Date.now();
-	
+	spamFilter(player,message)
 	if (message.includes('@here') || message.includes('@everyone')) {
 		room.kickPlayer(player.id,'Ngôn từ không hợp lệ',true)
 		return

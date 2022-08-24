@@ -4,20 +4,20 @@
  let config = {
    room1: {
      autoStart: true,
-     roomName: `🏆 Thế Vận Hội 1 - Bóng Chuyền - 🏐 🏆`,
+     roomName: `🏆 TVH 1 - Bóng Chuyền - 🏐 🏆`,
      noPlayer: true,
      maxPlayers: 13,
      public: true,
-     geo: {code: "VN", lat: 21.02886, lon: 105.85464},
+     geo: {code: "VN", lat: 11.9364, lon: 108.4172},
      roomScript: "/home/hqd_wendal/haxball-volleyball/tvh1.js",
    },
    room2: {
     autoStart: true,
-    roomName: `🏆 Thế Vận Hội 2 - Bóng Chuyền - 🏐 🏆`,
+    roomName: `🏆 TVH 2 - Bóng Chuyền - 🏐 🏆`,
     noPlayer: true,
     maxPlayers: 13,
     public: true,
-    geo: {code: "VN", lat: 21.02886, lon: 105.85464},
+    geo: {code: "VN", lat: 11.9363, lon: 108.4172},
     roomScript: "/home/hqd_wendal/haxball-volleyball/tvh1.js",
   },
 
